@@ -1,6 +1,6 @@
 import csv
 from datetime import datetime
-#atttempting to load file given into list of dictionaries to facilitate the future use of CRUD
+#load file given into list of dictionaries to facilitate the use of CRUD
 def load_transactions(filename):
     transactions = []
     try:
@@ -48,6 +48,8 @@ def load_transactions(filename):
 #     # print(transactions[5])
 
 
+
+# universal input validation (well mostly had difficulty using to confirm valid type)
 def get_valid_input(prompt, cast_func):
     while True:
         try:
@@ -56,7 +58,7 @@ def get_valid_input(prompt, cast_func):
         except Exception as e:
             print(f"Invalid input: {e}. Please try again.")
 
-
+# adds transaction to dictionary that only exists in python program
 def add_transaction(transactions):
     transaction_id = max(int(t['transaction_id']) for t in transactions) + 1
     print(transaction_id)
@@ -91,6 +93,7 @@ def add_transaction(transactions):
 #     add_transaction(transactions)
 
 
+#filters transactions list by date value in dictionary
 def filter_by_date(transactions: list[dict]):
     while True:
         try:
@@ -122,6 +125,7 @@ def filter_by_date(transactions: list[dict]):
             print(f'Error {e}')
 
 
+# filters transactions list by id value in dictionary
 def filter_by_id(transactions: list[dict]):
     while True:
         try:
@@ -138,6 +142,7 @@ def filter_by_id(transactions: list[dict]):
             print(f"error {e}")
 
 
+# filters transactions list customer id value in dictionary
 def filter_by_customerid(transactions: list[dict]):
     while True:
         try:
@@ -154,6 +159,7 @@ def filter_by_customerid(transactions: list[dict]):
             print(f'Error {e}')
 
 
+# filters transactions list by type and validates input
 def filter_by_type(transactions: list[dict]):
     while True:
         try:
@@ -167,6 +173,7 @@ def filter_by_type(transactions: list[dict]):
             print(f"Error {e}")
 
 
+# filters transactions list by amount
 def filter_by_amount(transactions: list[dict]):
     while True:
         try:
@@ -209,6 +216,7 @@ def filter_list(transactions: list[dict]):
              print(f'Error {e}')
 
 
+# asks to filter list and calls on filter_list() if chosen and formats display of transactions table
 def view_transactions(transactions: list[dict], check_filter: bool):
         if check_filter:
             while True:
@@ -262,7 +270,7 @@ def view_transactions(transactions: list[dict], check_filter: bool):
 # if __name__ == '__main__':
 #     view_transactions(transactions, True)
 
-
+# displays options and gets choice and returns it
 def display_options_and_get_choice(transactions):
     print("\nSmart Personal Finance Analyzer")
     print("1. Load Transactions")
@@ -278,6 +286,7 @@ def display_options_and_get_choice(transactions):
     return choice.strip().lower()
 
 
+# check choice returned by display_options_and_get_choice() and calls on functions accordingly
 def check_choice(choice: str, transactions):
     try:
         match choice:
@@ -303,7 +312,7 @@ def check_choice(choice: str, transactions):
     except Exception as e:
         print(f"Error {e}")
 
-
+# combines display_options_and_get_choice() and check_choice() to create menu system
 def main_menu(transactions):
     choice = ""
     while True:
@@ -315,6 +324,7 @@ def main_menu(transactions):
             print(f"Error {e}")
 
 
+# calls view_transactions to make a selction of which transactions to be updated or deleted should consider naming choose transaction implemented in update_transaction() and delete_transaction()
 def find_transaction(transactions: list[dict]):
     view_transactions(transactions, False)
     while True:
@@ -329,6 +339,7 @@ def find_transaction(transactions: list[dict]):
 #     find_transaction(transactions)
 
 
+# used to double check if user wants to do whichever option called especially used by update and delete transactions
 def doublecheck(current_data):
     while True:
         change_answer = input(f'Would You like to change {current_data}: (yes/no) ')
@@ -338,6 +349,7 @@ def doublecheck(current_data):
             return True
         
 
+# used to confirm changes set to be made to transactions
 def confirm_changes(current_data, new_data):
     while True:
         change_answer = input(f'Would You like to change {current_data} to {new_data}: (yes/no) ')
@@ -347,6 +359,7 @@ def confirm_changes(current_data, new_data):
             return True
         
 
+# used to update transaction checking what field to change and calling doublecheck() and confirm_changes()
 def update_transaction(transactions: list[dict]):
     transaction_num = find_transaction(transactions)
     while True:
@@ -429,6 +442,7 @@ def update_transaction(transactions: list[dict]):
 #     update_transaction(transactions)
 
 
+# used to delete transactions calling doublecheck() and confirm_changes()
 def delete_transaction(transactions):
     while True:
         transaction_index = int(find_transaction(transactions))
@@ -447,6 +461,7 @@ def delete_transaction(transactions):
 #     delete_transaction(transactions)
 
 
+# used to display an analysis of financial transactions given
 def analyze_finances(transactions: list[dict]):
     try:
         ask = input("would you like to analyze a filtered list?").strip().lower()
