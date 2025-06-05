@@ -512,6 +512,7 @@ def analyze_finances(transactions: list[dict]):
     except Exception as e:
         print(f"Error {e}")
 
+# saves transactions list and transactions updated deleted or created to original csv file
 def save_transactions(transactions: list[dict], filename='test.csv'):
     try:
         fieldnames = ['transaction_id','date','customer_id','amount','transaction_type','description']
@@ -529,6 +530,7 @@ def save_transactions(transactions: list[dict], filename='test.csv'):
     except Exception as e:
         print(f"Error {e}")
 
+# writes a report on financial transactions in given file to a text file witha timestamp
 def generate_report(transactions, filename='report.txt'):
     try:
         timestamp = datetime.now().strftime("%Y%m%d")
