@@ -286,7 +286,7 @@ def display_options_and_get_choice(transactions):
     print("7. Save Transactions")
     print("8. Generate Report")
     print("9. Exit")
-    choice = input("Select an option: ")
+    choice = input("Select an option: ").strip().lower()
     return choice.strip().lower()
 
 
@@ -334,7 +334,7 @@ def find_transaction(transactions: list[dict]):
     view_transactions(transactions, False)
     while True:
         try:
-            transaction_num = int(input("Transaction Number to be updated or removed: ")) -1
+            transaction_num = int(input("Transaction Number to be updated or removed: ")).strip() -1
             view_transactions([transactions[transaction_num]], False)
             return transaction_num
         except Exception as e:
@@ -347,34 +347,43 @@ def find_transaction(transactions: list[dict]):
 # used to double check if user wants to do whichever option called especially used by update and delete transactions
 def doublecheck(current_data):
     while True:
-        change_answer = input(f'Would You like to change {current_data}: (yes/no) ')
-        if change_answer.startswith('n'):
-            return False
-        if change_answer.startswith('y'):
-            return True
+        try:
+            change_answer = input(f'Would You like to change {current_data}: (yes/no) ').strip().lower()
+            if change_answer.startswith('n'):
+                return False
+            if change_answer.startswith('y'):
+                return True
+        except Exception as e:
+            print(f"Error {e}")
         
 
 # used to confirm changes set to be made to transactions
 def confirm_changes(current_data, new_data):
     while True:
-        change_answer = input(f'Would You like to change {current_data} to {new_data}: (yes/no) ')
-        if change_answer.startswith('n'):
-            return False
-        if change_answer.startswith('y'):
-            return True
+        try:
+            change_answer = input(f'Would You like to change {current_data} to {new_data}: (yes/no) ').strip().lower()
+            if change_answer.startswith('n'):
+                return False
+            if change_answer.startswith('y'):
+                return True
+        except Exception as e:
+            print(f"Error {e}")
         
 
 def update_another_field(transactions: list[dict]):
-    answer = input("Would You Like to update another field?").strip().lower()
-    if answer.startswith('y'):
-        update_transaction(transactions)
+    try:
+        answer = input("Would You Like to update another field?").strip().lower()
+        if answer.startswith('y'):
+            update_transaction(transactions)
+    except Exception as e:
+        print(f"Error {e}")
 
 # used to update transaction checking what field to change and calling doublecheck() and confirm_changes()
 def update_transaction(transactions: list[dict]):
     transaction_num = find_transaction(transactions)
     while True:
         try:
-            field_to_be_updated = input('Field to be updated: ')
+            field_to_be_updated = input('Field to be updated: ').strip().lower()
             match field_to_be_updated:
                 case "id":
                     print(transactions[transaction_num]['transaction_id'])
@@ -462,17 +471,20 @@ def update_transaction(transactions: list[dict]):
 # used to delete transactions calling doublecheck() and confirm_changes()
 def delete_transaction(transactions):
     while True:
-        transaction_index = int(find_transaction(transactions))
-        # view_transactions(transactions[transaction_index], False)
-        answer = input("Are you sure you want to delete this transaction? ").lower().strip()
-        if answer.startswith('y'):
-            del transactions[transaction_index]
-            load_transactions(transactions)
-            print('transaction deleted.')
-            break
-        elif answer.startswith('n'):
-            print('Returning to Main Menu... ')
-            break
+        try:
+            transaction_index = int(find_transaction(transactions))
+            # view_transactions(transactions[transaction_index], False)
+            answer = input("Are you sure you want to delete this transaction? ").lower().strip()
+            if answer.startswith('y'):
+                del transactions[transaction_index]
+                load_transactions(transactions)
+                print('transaction deleted.')
+                break
+            elif answer.startswith('n'):
+                print('Returning to Main Menu... ')
+                break
+        except Exception as e:
+            print(f"Error {e}")
 
 # if __name__ == '__main__':
 #     delete_transaction(transactions)
