@@ -53,7 +53,7 @@ def load_transactions(filename='test.csv'):
 def get_valid_input(prompt, cast_func):
     while True:
         try:
-            input_value = input(f'please input in this format ({prompt}): ')
+            input_value = input(f'please input ({prompt}): ')
             value = cast_func(input_value)
             return value
         except Exception as e:
@@ -64,7 +64,7 @@ def add_transaction(transactions):
     try:
         transaction_id = max(int(t['transaction_id']) for t in transactions) + 1
         print(transaction_id)
-        date = get_valid_input('YYYY-MM-DD', lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
+        date = get_valid_input('Date: (YYYY-MM-DD)', lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
         customer_id = get_valid_input('Customer ID: ', int)
         amount = get_valid_input('Amount: ', float)
         while True:
@@ -244,7 +244,7 @@ def view_transactions(transactions: list[dict], check_filter: bool):
             for idx, t in enumerate(transactions):
                 data_rows.append([
                     str(idx +1),
-                    t['date'].strftime('%Y-%m-%d'),
+                    t['date'].strftime('%B %d, %Y'),
                     str(t['transaction_id']),
                     str(t['customer_id']),
                     str(t['amount']),
@@ -364,6 +364,11 @@ def confirm_changes(current_data, new_data):
             return True
         
 
+def update_another_field(transactions: list[dict]):
+    answer = input("Would You Like to update another field?").strip().lower()
+    if answer.startswith('y'):
+        update_transaction(transactions)
+
 # used to update transaction checking what field to change and calling doublecheck() and confirm_changes()
 def update_transaction(transactions: list[dict]):
     transaction_num = find_transaction(transactions)
@@ -375,37 +380,42 @@ def update_transaction(transactions: list[dict]):
                     print(transactions[transaction_num]['transaction_id'])
                     current_data = transactions[transaction_num]['transaction_id']
                     if doublecheck(current_data):
-                        new_data = get_valid_input(input("new transaction id: "), int)
+                        new_data = get_valid_input("new transaction id: ", int)
                         if confirm_changes(current_data, new_data):
                             transactions[transaction_num]['transaction_id'] = new_data
                     print(transactions[transaction_num]['transaction_id'])
+                    update_another_field(transactions)
                     break
                 case "date":
                     print(transactions[transaction_num]['date'])
                     current_data = transactions[transaction_num]['date']
                     if doublecheck(current_data):
-                        new_data = get_valid_input(input("new date: "), lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
+                        new_data = get_valid_input("new date: ", lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
                         if confirm_changes(current_data, new_data):
                             transactions[transaction_num]['date'] = new_data
                     print(transactions[transaction_num]['date'])
+                    # update_another_field(transactions)
+
                     break
                 case "customer":
                     print(transactions[transaction_num]['customer_id'])
                     current_data = transactions[transaction_num]['customer_id']
                     if doublecheck(current_data):
-                        new_data = get_valid_input(input("new customer id: "), int)
+                        new_data = get_valid_input("new customer id: ", int)
                         if confirm_changes(current_data, new_data):
                             transactions[transaction_num]['customer_id'] = new_data
                     print(transactions[transaction_num]['customer_id'])
+                    # update_another_field(transactions)
                     break
                 case "amount":
                     print(transactions[transaction_num]['amount'])
                     current_data = transactions[transaction_num]['amount']
                     if doublecheck(current_data):
-                        new_data = get_valid_input(input("new amount: "), float)
+                        new_data = get_valid_input("new amount: ", float)
                         if confirm_changes(current_data, new_data):
                             transactions[transaction_num]['amount'] = new_data
                     print(transactions[transaction_num]['amount'])
+                    # update_another_field(transactions)
                     break
                 case "type":
                     ## probably should have amount changed through transaction change
@@ -427,6 +437,7 @@ def update_transaction(transactions: list[dict]):
                                 transactions[transaction_num]['amount'] = abs(transactions[transaction_num]['amount'])
                             transactions[transaction_num]['transaction_type'] = new_data
                     print(transactions[transaction_num]['transaction_type'])
+                    # update_another_field(transactions)
                     break
                 case "description":
                     print(transactions[transaction_num]['description'])
@@ -436,6 +447,7 @@ def update_transaction(transactions: list[dict]):
                         if confirm_changes(current_data, new_data):
                             transactions[transaction_num]['description'] = new_data
                     print(transactions[transaction_num]['description'])
+                    # update_another_field(transactions)
                     break
                 case default:
                     print("invalid input")
@@ -476,7 +488,7 @@ def analyze_finances(transactions: list[dict]):
         total_debits = sum(t['amount'] for t in transactions if t['transaction_type'] == 'debit')
         total_transfers = sum(t['amount'] for t in transactions if t['transaction_type'] == 'transfer')
         net_balance = sum(t['amount'] for t in transactions )
-        print("Financial Summary: ")
+        print("\nFinancial Summary: ")
         print(f"Total Credits: {total_credits:.2f}")
         print(f"Totla Debits: {total_debits:.2f}")
         print(f"Total Transfers: {total_transfers:.2f}")
