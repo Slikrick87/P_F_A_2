@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 #load file given into list of dictionaries to facilitate the use of CRUD
-def load_transactions(filename):
+def load_transactions(filename='test.csv'):
     transactions = []
     try:
         with open(filename, 'r') as file:
@@ -18,7 +18,7 @@ def load_transactions(filename):
                     # last_transaction_id = transaction_id
                     customer_id = int(row['customer_id'])
                     amount = float(row['amount'])
-                    transaction_type = row['type']
+                    transaction_type = row['transaction_type']
                     if transaction_type == 'debit':
                         amount = -amount
                     description = row['description']
@@ -53,39 +53,43 @@ def load_transactions(filename):
 def get_valid_input(prompt, cast_func):
     while True:
         try:
-            value = cast_func(prompt)
+            input_value = input(f'please input in this format ({prompt}): ')
+            value = cast_func(input_value)
             return value
         except Exception as e:
             print(f"Invalid input: {e}. Please try again.")
 
 # adds transaction to dictionary that only exists in python program
 def add_transaction(transactions):
-    transaction_id = max(int(t['transaction_id']) for t in transactions) + 1
-    print(transaction_id)
-    date = get_valid_input('Date: YYYY-MM-DD ', lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
-    customer_id = get_valid_input('Customer ID: ', int)
-    amount = get_valid_input('Amount: ', float)
-    while True:
-        transaction_type = get_valid_input('Type of transaction: (credit, debit, transfer) ', str).strip().lower()
-        if transaction_type not in {"credit", "debit", 'transfer'}:
-            print('improper input Try again')
-            continue
-        break
-    description = get_valid_input("Transaction Description: ", str)
-    new_transaction = {
-                        'transaction_id': transaction_id, 
-                        'date': date,
-                        'customer_id': customer_id,
-                        'amount': amount,
-                        'transaction_type': transaction_type,
-                        'description': description
-    }
-    transactions.append(new_transaction)
-    fieldnames =['transaction_id', 'date', 'customer_id', 'amount', 'transaction_type', 'description']
-    with open('financial_transactions.csv', 'a', newline= '\n') as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writerow(new_transaction)
-        print("transaction added!")
+    try:
+        transaction_id = max(int(t['transaction_id']) for t in transactions) + 1
+        print(transaction_id)
+        date = get_valid_input('YYYY-MM-DD', lambda x: datetime.strptime(x, '%Y-%m-%d')).date()
+        customer_id = get_valid_input('Customer ID: ', int)
+        amount = get_valid_input('Amount: ', float)
+        while True:
+            transaction_type = get_valid_input('Type of transaction: (credit, debit, transfer) ', str).strip().lower()
+            if transaction_type not in {"credit", "debit", 'transfer'}:
+                print('improper input Try again')
+                continue
+            break
+        description = get_valid_input("Transaction Description: ", str)
+        new_transaction = {
+                            'transaction_id': transaction_id, 
+                            'date': date,
+                            'customer_id': customer_id,
+                            'amount': amount,
+                            'transaction_type': transaction_type,
+                            'description': description
+        }
+        transactions.append(new_transaction)
+        # fieldnames =['transaction_id', 'date', 'customer_id', 'amount', 'transaction_type', 'description']
+        # with open('financial_transactions.csv', 'a', newline= '\n') as file:
+        #     writer = csv.DictWriter(file, fieldnames=fieldnames)
+        #     writer.writerow(new_transaction)
+        #     print("transaction added!")
+    except Exception as e:
+        print(f"Error {e}")
 
 
         
@@ -261,7 +265,7 @@ def view_transactions(transactions: list[dict], check_filter: bool):
 
             for row in data_rows:
                 print(fmt.format(*row))
-            answer = input("")
+            answer = input("Press Enter to continue...")
         except Exception as e:
             print(f'error {e}')
 
@@ -303,11 +307,12 @@ def check_choice(choice: str, transactions):
             case "6":
                 analyze_finances(transactions)
             case "7":
-                print("Under Construction")
+                save_transactions(transactions)
             case "8":
-                print("Under Construction")
+                generate_report(transactions)
             case "9":
                 print("Exitting Program")
+                exit()
                 return
     except Exception as e:
         print(f"Error {e}")
@@ -478,6 +483,49 @@ def analyze_finances(transactions: list[dict]):
         print(f"Net Balance: {net_balance:.2f}")
         print("By Type: ")
         print(f"\tCredit: {total_credits:.2f}")
-        print(f"Debit: {total_debits:.2f}")
+        print(f"\tDebit: {total_debits:.2f}")
+        cont = input("Press enter to return to menu ")
+    except Exception as e:
+        print(f"Error {e}")
+
+def save_transactions(transactions: list[dict], filename='test.csv'):
+    try:
+        fieldnames = ['transaction_id','date','customer_id','amount','transaction_type','description']
+        with open(filename ,'w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in transactions:
+                row_copy = row.copy()
+                if isinstance(row_copy['date'], (datetime, )):
+                    row_copy['date'] = row_copy['date'].strftime('%Y-%m-%d')
+                else:
+                    row_copy['date'] = str(row_copy['date'])
+                writer.writerow(row_copy)
+        print(f"Transactions saved to {filename}")
+    except Exception as e:
+        print(f"Error {e}")
+
+def generate_report(transactions, filename='report.txt'):
+    try:
+        timestamp = datetime.now().strftime("%Y%m%d")
+        filename = f'report_{timestamp}.txt'
+        ask = input("would you like to analyze a filtered list?").strip().lower()
+        if ask.startswith('y'):
+            transactions = filter_list(transactions)
+        total_credits = sum(t['amount'] for t in transactions if t['transaction_type'] == 'credit')
+        total_debits = sum(t['amount'] for t in transactions if t['transaction_type'] == 'debit')
+        total_transfers = sum(t['amount'] for t in transactions if t['transaction_type'] == 'transfer')
+        net_balance = sum(t['amount'] for t in transactions )
+        with open(filename, 'w') as file:
+            file.write("Financial Summary:\n")
+            file.write(f"Total Credits: {total_credits:.2f}\n")
+            file.write(f"Total Debits: {total_debits:.2f}\n")
+            file.write(f"Total Transfers: {total_transfers:.2f}\n")
+            file.write(f"Net Balance: {net_balance:.2f}\n")
+            file.write("By Type: \n")
+            file.write(f"\tCredit: {total_credits:.2f}\n")
+            file.write(f"\tDebit: {total_debits:.2f}\n")
+        print(f"Generating report saving to {filename}")
+        cont = input("Press enter to continue...")
     except Exception as e:
         print(f"Error {e}")
