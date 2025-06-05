@@ -1,7 +1,52 @@
-transaction_id,date,customer_id,amount,transaction_type,description
-99981,2022-05-19,897,74.46,credit,Picture rate environment.
-99982,2020-06-29,881,608.64,transfer,Manage author bit live trip.
-99983,2018-08-25,773,7207.82,debit,Watch week she science key per.
-99984,2021-04-23,595,188.14,credit,Space left majority tax.
-99985,2018-10-31,682,3850.9,debit,Central candidate guy knowledge 
-99986,1991-03-15,187,-7000000.0,debit,Spartan armor Mark IV
+transaction_id,date,customer_id,amount,type,description
+1,2020-10-26,926,6478.39,credit,Expect series shake art again our.
+2,2020-01-08,466,1255.95,credit,Each left similar likely coach take.
+3,2019-09-02,110,-7969.68,debit,Direction wife job pull determine leader move college.
+4,2020-12-02,142,2927.41,credit,Agree reveal buy black already.
+5,2020-12-02,944,-4661.88,debit,Child relationship show college whom speech.
+6,2021-04-25,900,3649.68,credit,Century front item.
+7,2020-06-19,458,504.24,credit,Market cover loss hotel send.
+8,2022-09-08,573,8088.01,credit,Trouble reason speak involve.
+9,2022-01-30,950,3006.3,credit,Popular three war arm best.
+10,2020-08-20,728,1008.62,credit,Old see watch no.
+11,2019-12-09,908,-4615.87,debit,Million explain rule boy agree can.
+12,2019-01-18,585,-405.19,debit,Us save attention interest country short.
+13,2018-04-15,227,5938.56,credit,Media organization structure their cut not where few.
+14,2019-06-06,565,-3516.95,debit,Available smile make star majority.
+15,2022-01-17,818,9454.59,credit,Fund house head course around strategy lead.
+16,2020-12-08,751,3415.26,credit,Main few character air.
+17,2021-06-05,658,9751.08,transfer,Listen operation enough those society open.
+18,2022-05-23,296,1676.77,transfer,Property strategy represent that.
+19,2020-01-25,681,-5159.9,debit,Soldier green age much sound write chair.
+20,2020-02-19,33,-6018.28,debit,What single suggest now stop.
+21,2020-04-09,611,2359.42,transfer,Support do interesting citizen phone energy consider.
+22,2021-03-19,988,-7626.52,debit,This pass civil education.
+23,2019-10-24,383,-5356.25,debit,Choose between staff southern fine not manager nothing.
+24,2021-09-02,8,2488.02,credit,Speak ever piece whom indicate she.
+25,2022-09-07,497,7752.41,credit,She cover impact program physical.
+26,2018-09-04,531,987.32,credit,Newspaper region sister whose man fight usually.
+27,2018-05-16,355,3919.23,credit,Lead talk military including system sometimes few within.
+28,2021-08-29,570,1281.53,transfer,Have focus admit again.
+29,2021-01-18,915,1820.42,credit,Write allow on.
+30,2022-06-05,69,5771.55,transfer,Relate small employee.
+31,2020-07-10,531,3596.93,credit,Wish not live be practice.
+32,2022-07-10,343,7107.4,credit,Hour down professor risk wear.
+33,2022-11-16,570,483.28,credit,Popular article light indeed.
+34,2018-03-30,950,2005.85,transfer,Yet cover consider national your successful computer.
+35,2020-03-28,839,4914.61,transfer,Hope moment value article would economic point technology.
+36,2019-11-30,439,-3934.16,debit,Newspaper well computer population recently price.
+37,2021-07-14,590,4774.77,transfer,Customer sort huge.
+38,2022-06-16,997,6247.55,transfer,Message wear indicate.
+39,2018-08-25,183,7211.23,transfer,Trip carry camera upon reality doctor adult.
+40,2022-02-08,815,7181.74,transfer,Probably leg indicate.
+41,2020-08-06,120,-9259.66,debit,Or few there notice once down indeed per.
+42,2022-01-06,453,8818.31,transfer,Research open catch government left.
+43,2021-12-09,416,4723.88,transfer,Single understand individual together.
+44,2019-06-04,252,919.33,transfer,Heavy would camera high other appear next.
+45,2021-09-15,514,8037.19,credit,Human president myself young option try.
+46,2023-03-05,410,-468.79,debit,Run us scientist computer.
+47,2021-03-14,340,9017.15,credit,This western whose raise.
+48,2021-12-20,433,932.48,credit,Own pick someone claim sound watch rise.
+49,2021-06-27,864,592.05,transfer,Threat management consumer resource here else.
+50,2022-05-27,254,1485.95,transfer,Important stock lot support.
+51,1991-03-15,187,748.0,debit,Swag

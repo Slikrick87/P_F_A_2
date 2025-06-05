@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 #load file given into list of dictionaries to facilitate the use of CRUD
-def load_transactions(filename='test.csv'):
+def load_transactions(filename='financial_transactions.csv'):
     transactions = []
     try:
         with open(filename, 'r') as file:
@@ -18,7 +18,7 @@ def load_transactions(filename='test.csv'):
                     # last_transaction_id = transaction_id
                     customer_id = int(row['customer_id'])
                     amount = float(row['amount'])
-                    transaction_type = row['transaction_type']
+                    transaction_type = row['type']
                     if transaction_type == 'debit':
                         amount = -amount
                     description = row['description']
@@ -493,7 +493,7 @@ def delete_transaction(transactions):
 # used to display an analysis of financial transactions given
 def analyze_finances(transactions: list[dict]):
     try:
-        ask = input("would you like to analyze a filtered list?").strip().lower()
+        ask = input("would you like to analyze a filtered list? ").strip().lower()
         if ask.startswith('y'):
             transactions = filter_list(transactions)
         total_credits = sum(t['amount'] for t in transactions if t['transaction_type'] == 'credit')
@@ -515,7 +515,7 @@ def analyze_finances(transactions: list[dict]):
 # saves transactions list and transactions updated deleted or created to original csv file
 def save_transactions(transactions: list[dict], filename='test.csv'):
     try:
-        fieldnames = ['transaction_id','date','customer_id','amount','transaction_type','description']
+        fieldnames = ['transaction_id','date','customer_id','amount','type','description']
         with open(filename ,'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
@@ -535,7 +535,7 @@ def generate_report(transactions, filename='report.txt'):
     try:
         timestamp = datetime.now().strftime("%Y%m%d")
         filename = f'report_{timestamp}.txt'
-        ask = input("would you like to analyze a filtered list?").strip().lower()
+        ask = input("would you like to generate a report on a filtered list? ").strip().lower()
         if ask.startswith('y'):
             transactions = filter_list(transactions)
         total_credits = sum(t['amount'] for t in transactions if t['transaction_type'] == 'credit')
@@ -552,6 +552,6 @@ def generate_report(transactions, filename='report.txt'):
             file.write(f"\tCredit: {total_credits:.2f}\n")
             file.write(f"\tDebit: {total_debits:.2f}\n")
         print(f"Generating report saving to {filename}")
-        cont = input("Press enter to continue...")
+        cont = input("Press enter to continue... ")
     except Exception as e:
         print(f"Error {e}")
